@@ -6,8 +6,6 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-
-
 let persons = [
   {
     id: "1",
@@ -82,7 +80,7 @@ app.post("/api/persons", (request, response) => {
 app.delete("/api/persons/:person", (request, response) => {
   const personId = request.params.person;
   const person = persons.filter((person) => person.id !== personId);
-  response.statusMessage = "Person deleted" + personId;
+  response.statusMessage = "Person deleted" + person;
   response.status(204).end();
 });
 
