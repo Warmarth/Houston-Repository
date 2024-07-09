@@ -3,7 +3,7 @@ const cors = require("cors");
 const app = express();
 
 //middleware
-app.use(express.json());
+
 app.use(cors());
 
 let persons = [
@@ -28,6 +28,21 @@ let persons = [
     number: "39-23-6423122",
   },
 ];
+
+const requestLogger = (request, response, next) => {
+  console.log("Method:", request.method);
+  console.log("Path:  ", request.path);
+  console.log("Body:  ", request.body);
+  console.log("---");
+  next();
+};
+
+app.use(express.json());
+app.use(requestLogger);
+
+const unknownEndpoint = (request, response) => {
+  response.status(404).send({ error: "unknown endpoint" });
+};
 
 //get request
 app.get("/", (request, response) => {
@@ -101,6 +116,7 @@ app.patch("/api/persons/:person", (request, response) => {
 });
 
 //patch request
+app.use(unknownEndpoint);
 
 const PORT = process.env.PORT || 4500;
 app.listen(PORT, () => {
