@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Note from './huston/note';
 import service from '../service/service';
-// import axios from 'axios';
 
 function Sidebar() {
   const [persons, setPersons] = useState([] || null);
@@ -50,7 +49,7 @@ function Sidebar() {
   const toggleDelete = (id) => {
     const i = persons.find((ind) => ind.id === id);
     setUpdate({ ...state, isDeleted: `Deleted ${i.name} from phonebook` });
-    // service.remove(id).then((response) => console.log(response));
+    service.remove(id).then((response) => console.log(response));
     setTimeout(() => {
       setUpdate({ ...state, isDeleted: false });
     }, 1000);
@@ -66,14 +65,6 @@ function Sidebar() {
   };
 
   const toggleUpdate = (id) => {
-    // axios.get(`http://localhost:3001/persons/${id}`).then((response) => {
-    //   setNewName(response.data);
-    //   console.log(response.data);
-
-    //   setUpdate(true);
-    // });
-    // setNewName(response.data);
-
     const i = persons.find((ind) => ind.id === id);
     setNewName(i);
     setUpdate({ ...state, isUpdate: true });
@@ -109,7 +100,6 @@ function Sidebar() {
           >
             <span className="">
               <Note
-                // keys={person.id}
                 note={person}
                 toggleDelete={() => toggleDelete(person.id)}
                 toggleUpdate={() => toggleUpdate(person.id)}

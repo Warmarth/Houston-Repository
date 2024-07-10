@@ -39,15 +39,16 @@ const requestLogger = (request, response, next) => {
 
 app.use(express.json());
 app.use(requestLogger);
+app.use(express.static("dist"));
 
 const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: "unknown endpoint" });
 };
 
 //get request
-app.get("/", (request, response) => {
-  response.send("Phonebook");
-});
+// app.get("/", (request, response) => {
+//   response.send("Phonebook");
+// });
 
 app.get("/api/persons", (request, response) => {
   response.json(persons);
@@ -103,22 +104,21 @@ app.delete("/api/persons/:person", (request, response) => {
 app.patch("/api/persons/:person", (request, response) => {
   const personId = request.params.person;
   const person = persons.find((person) => person.id === personId);
-  // if (person) {
   const updatePerson = {
     ...person,
     name: request.body.name,
     number: request.body.number,
   };
-  const newList = persons.map((p) => (p.id === personId ? updatePerson : p));
-  // }
+  persons.map((p) => (p.id === personId ? updatePerson : p));
 
-  response.json(newList);
+  response.json(persons);
 });
 
 //patch request
+
 app.use(unknownEndpoint);
 
 const PORT = process.env.PORT || 4500;
 app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+  console.log(`Server running on http://localhost:${PORT}` );
 });

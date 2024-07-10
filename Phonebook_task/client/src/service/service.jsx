@@ -1,5 +1,5 @@
 import axios from 'axios';
-const baseUrl = 'http://localhost:4500/api/persons';
+const baseUrl = '/api/persons';
 
 const getAll = () => {
   const request = axios.get(baseUrl);
@@ -26,5 +26,5 @@ const overwrite = (id, newObject) => {
   return request.then((response) => response.data);
 };
 // axios.patch was used to update the data in the server. The patch method is used to apply partial modifications to a resource. This means that you are allowed to send only the data that you want to update, and it won't affect the other data in the resource.
-// axios.delete was used to delete the data in the server. The delete method is used to delete a resource from the server. It is used to delete the resource at the specified URL.
+// axios.delete was used to delete the data in the server. The delete method is used to delete a resource from the server. It is used to delete the resource at the specified URL
 export default { getAll, create, update, remove, overwrite };
