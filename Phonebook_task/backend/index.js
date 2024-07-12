@@ -1,11 +1,13 @@
 const express = require("express");
 const cors = require("cors");
+const path = require("path");
 const app = express();
 
 //middleware
 
 app.use(cors());
-
+app.use(express.json());
+app.use(express.static(path.join(__dirname, "dist")));
 let persons = [
   {
     id: "1",
@@ -37,18 +39,16 @@ const requestLogger = (request, response, next) => {
   next();
 };
 
-app.use(express.json());
 app.use(requestLogger);
-app.use(express.static("dist"));
 
 const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: "unknown endpoint" });
 };
 
 //get request
-// app.get("/", (request, response) => {
-//   response.send("Phonebook");
-// });
+app.get("/", (request, response) => {
+  response.send("Phonebook");
+});
 
 app.get("/api/persons", (request, response) => {
   response.json(persons);
@@ -88,20 +88,20 @@ app.post("/api/persons", (request, response) => {
     number: body.number,
     id: body.id,
   };
-  console.log(person);
+
   response.json(person);
 });
 
 //delete request
 app.delete("/api/persons/:person", (request, response) => {
   const personId = request.params.person;
-  const person = persons.filter((person) => person.id !== personId);
-  response.statusMessage = "Person deleted" + person;
+  persons.filter((person) => person.id !== personId);
+  response.statusMessage = "Person deleted";
   response.status(204).end();
 });
 
 //put request
-app.patch("/api/persons/:person", (request, response) => {
+app.put("/api/persons/:person", (request, response) => {
   const personId = request.params.person;
   const person = persons.find((person) => person.id === personId);
   const updatePerson = {
@@ -111,7 +111,7 @@ app.patch("/api/persons/:person", (request, response) => {
   };
   persons.map((p) => (p.id === personId ? updatePerson : p));
 
-  response.json(persons);
+  response.json();
 });
 
 //patch request
@@ -120,5 +120,5 @@ app.use(unknownEndpoint);
 
 const PORT = process.env.PORT || 4500;
 app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}` );
+  console.log(`Server running on http://localhost:${PORT}`);
 });

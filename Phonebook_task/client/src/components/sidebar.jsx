@@ -59,6 +59,7 @@ function Sidebar() {
   const hooke = () => {
     try {
       service.getAll().then((data) => setPersons(data));
+    
     } catch (error) {
       console.error('Error fetching data:', error.message);
     }
